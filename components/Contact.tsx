@@ -1,16 +1,16 @@
 'use client';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { personalInfo, skillsCategories, projects } from '../lib/data';
+import { personalInfo, skillsCategories, projects, SkillCategory } from '../lib/data';
 
 const COMMANDS: Record<string, string[]> = {
   help: [
     '┌─ Available Commands ─────────────────────────────────┐',
-    '│  whoami    — identity + bio                          │',
-    '│  skills    — full skill matrix                       │',
-    '│  projects  — project archive                         │',
-    '│  contact   — reach out                               │',
-    '│  status    — system status                           │',
-    '│  clear     — clear terminal                          │',
+    '│  whoami    — identity + bio                         │',
+    '│  skills    — full skill matrix                      │',
+    '│  projects  — project archive                        │',
+    '│  contact   — reach out                              │',
+    '│  status    — system status                          │',
+    '│  clear     — clear terminal                         │',
     '└──────────────────────────────────────────────────────┘',
   ],
   whoami: [
@@ -20,8 +20,8 @@ const COMMANDS: Record<string, string[]> = {
     `▸ Status   : ${personalInfo.availability}`,
     `▸ Focus    : Malware Research · ML Security · CTF`,
   ],
-  skills: skillsCategories.map(c => `  [${c.icon ?? '◆'} ${c.category}] → ${c.skills.join(', ')}`),
-  projects: projects.map((p, i) => `  [${String(i + 1).padStart(2, '0')}] ${p.title}`),
+  skills: skillsCategories.map((c: SkillCategory) => `   [${c.icon} ${c.category}] → ${c.skills.join(', ')}`),
+  projects: projects.map((p, i) => `   [${String(i + 1).padStart(2, '0')}] ${p.title}`),
   contact: [
     `▸ Email  : ${personalInfo.email}`,
     `▸ Phone  : ${personalInfo.phone}`,
@@ -42,7 +42,7 @@ const INIT = [
   '║   Cybersecurity Researcher & ML Engineer     ║',
   '╚══════════════════════════════════════════════╝',
   '',
-  '  Type "help" for available commands.',
+  '   Type "help" for available commands.',
   '',
 ];
 
@@ -127,7 +127,6 @@ export default function Terminal() {
         boxShadow: '0 20px 60px rgba(0,0,0,0.6), 0 0 40px rgba(0,255,136,0.06)',
       }}
     >
-      {/* Title bar */}
       <div
         className="flex items-center gap-2 px-5 py-3 border-b"
         style={{ borderColor: 'rgba(255,255,255,0.05)', background: 'rgba(0,0,0,0.2)' }}
@@ -149,7 +148,6 @@ export default function Terminal() {
         </div>
       </div>
 
-      {/* Output area */}
       <div
         className="p-5 h-72 overflow-y-auto font-mono text-xs space-y-0.5 cursor-text"
         style={{ scrollbarWidth: 'thin', scrollbarColor: '#003311 transparent' }}
@@ -185,7 +183,6 @@ export default function Terminal() {
         <div ref={bottomRef} />
       </div>
 
-      {/* Input */}
       <div
         className="flex items-center gap-3 px-5 py-3 border-t"
         style={{ borderColor: 'rgba(255,255,255,0.05)', background: 'rgba(0,0,0,0.15)' }}
@@ -205,7 +202,6 @@ export default function Terminal() {
           spellCheck={false}
           disabled={typing}
         />
-        {/* Auto-complete hint */}
         {input && !typing && (
           <div className="font-mono text-xs shrink-0" style={{ color: 'rgba(0,255,136,0.2)' }}>
             Tab ↹
