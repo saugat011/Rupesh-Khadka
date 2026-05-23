@@ -40,13 +40,6 @@ export default function LoadingScreen({ onDone }: { onDone: () => void }) {
     return () => clearInterval(interval);
   }, [onDone]);
 
-  // Scanline flicker
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-    gsap.to(el, { filter: 'brightness(1.04)', yoyo: true, repeat: -1, duration: 0.08, ease: 'none' });
-  }, []);
-
   return (
     <div
       ref={containerRef}
