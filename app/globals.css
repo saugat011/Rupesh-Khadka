@@ -9,9 +9,17 @@
   --terminal-bg: rgba(10, 10, 10, 0.85);
 }
 html, body {
+  scroll-behavior: smooth;
   scroll-restoration: manual !important;
-  overscroll-behavior: none; /* Prevents mobile browser pull-to-refresh jumps */
+  overscroll-behavior-y: none; /* Stops the pull-to-refresh jump */
+  overflow-anchor: none;       /* Stops browser from auto-scrolling to images */
 }
+
+/* Ensure sections don't collapse */
+section {
+  min-height: 100vh;
+}
+
 
 @theme inline {
   --color-background: var(--bg-color);
