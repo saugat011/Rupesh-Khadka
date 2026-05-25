@@ -3,13 +3,14 @@ import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 
 const NAV_ITEMS = [
-  { id: 'hero',       label: 'Home',      icon: '⌂' },
-  { id: 'about',      label: 'About',     icon: '◈' },
-  { id: 'skills',     label: 'Skills',    icon: '⚡' },
-  { id: 'experience', label: 'Experience', icon: '◎' },
-  { id: 'projects',   label: 'Projects',  icon: '◆' },
-  { id: 'research',   label: 'Research',  icon: '◉' },
-  { id: 'contact',    label: 'Contact',    icon: '◈' },
+  { id: 'hero',       label: 'Home',      icon: '' },
+  { id: 'about',      label: 'About',     icon: '' },
+  { id: 'skills',     label: 'Skills',    icon: '' },
+  { id: 'experience', label: 'Experience', icon: '' },
+  { id: 'projects',   label: 'Projects',  icon: '' },
+  { id: 'research',   label: 'Research',  icon: '' },
+   { id: 'gallery',   label: 'Gallery',  icon: '' },
+  { id: 'contact',    label: 'Contact',    icon: '' },
 ];
 
 function scrollTo(id: string) {

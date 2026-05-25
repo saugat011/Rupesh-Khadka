@@ -13,6 +13,7 @@ import Skills      from '../components/Skills';
 import Experience  from '../components/Experience';
 import Projects    from '../components/Projects';
 import Research    from '../components/Research';
+import Gallery     from '../components/Gallery';
 import Contact     from '../components/Contact';
 
 export default function Page() {
@@ -74,6 +75,7 @@ export default function Page() {
           <div id="experience"><Experience /></div>
           <div id="projects"><Projects /></div>
           <div id="research"><Research /></div>
+          <div id="gallery"><Gallery /></div>
           <div id="contact"><Contact /></div>
         </div>
       )}

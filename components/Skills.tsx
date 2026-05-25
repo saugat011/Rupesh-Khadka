@@ -71,7 +71,7 @@ export default function Skills() {
               <GlassCard accent={accent} style={{ padding: 26, height: '100%' }}>
                 {/* Category header */}
                 <div className="flex items-center gap-3 mb-5">
-                  <div
+                  {/* <div
                     className="w-9 h-9 rounded-lg flex items-center justify-center text-lg shrink-0"
                     style={{
                       background: `${accent}14`,
@@ -79,7 +79,7 @@ export default function Skills() {
                     }}
                   >
                     {cat.icon ?? '◆'}
-                  </div>
+                  </div> */}
                   <div
                     className="font-mono font-black text-xs uppercase tracking-wider leading-tight"
                     style={{ color: 'rgba(255,255,255,0.7)' }}
