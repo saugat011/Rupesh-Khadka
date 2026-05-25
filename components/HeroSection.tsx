@@ -37,14 +37,12 @@ export default function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const glitchRef  = useRef<HTMLHeadingElement>(null);
 
-  // Role cycling
   useEffect(() => {
     if (!nameDone) return;
     const id = setInterval(() => setRoleIdx(i => (i + 1) % ROLES.length), 2800);
     return () => clearInterval(id);
   }, [nameDone]);
 
-  // Glitch animation
   useEffect(() => {
     if (!glitchRef.current || !nameDone) return;
     const tl = gsap.timeline({ repeat: -1, repeatDelay: 5 });
@@ -57,8 +55,6 @@ export default function HeroSection() {
     return () => { tl.kill(); };
   }, [nameDone]);
 
-  // FIX: Exclude the h1 (name) from GSAP fade-in so it's always visible.
-  // Animate only the sibling elements below it, never the name itself.
   useEffect(() => {
     gsap.from('.hero-content-animate', {
       opacity: 0, y: 40,
@@ -95,55 +91,49 @@ export default function HeroSection() {
       <div
         className="absolute left-0 right-0 pointer-events-none"
         style={{
-          height: 2,
-          background: 'linear-gradient(90deg,transparent,rgba(0,255,136,0.25),transparent)',
-          animation: 'scanLine 6s linear infinite',
+          height: 1,
+          background: 'linear-gradient(90deg,transparent,rgba(0,255,136,0.18),transparent)',
+          animation: 'scanLine 8s linear infinite',
         }}
       />
 
-      <div className="hero-content relative z-10 text-center px-6 max-w-5xl mx-auto flex flex-col items-center">
+      <div className="hero-content relative z-10 text-center w-full max-w-5xl mx-auto flex flex-col items-center"
+        style={{ padding: 'clamp(80px, 12vw, 120px) clamp(16px, 5vw, 40px) clamp(60px, 10vw, 100px)' }}
+      >
 
         {/* Identity badge */}
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6, ease: 'easeOut' }}
-          className="flex items-center gap-3 mb-8 font-mono text-xs tracking-[0.5em]"
-          style={{ color: 'rgba(0,255,136,0.5)' }}
+          className="flex items-center gap-2 mb-6 font-mono tracking-widest"
+          style={{ color: 'rgba(0,255,136,0.5)', fontSize: 'clamp(8px, 2vw, 11px)' }}
         >
-          <div className="h-px w-14" style={{ background: 'linear-gradient(90deg,transparent,#00ff88)' }} />
-          <span>OPERATOR IDENTITY CONFIRMED</span>
-          <div className="h-px w-14" style={{ background: 'linear-gradient(90deg,#00ff88,transparent)' }} />
+          <div className="h-px" style={{ width: 'clamp(24px, 5vw, 56px)', background: 'linear-gradient(90deg,transparent,#00ff88)' }} />
+          <span className="whitespace-nowrap">OPERATOR IDENTITY CONFIRMED</span>
+          <div className="h-px" style={{ width: 'clamp(24px, 5vw, 56px)', background: 'linear-gradient(90deg,#00ff88,transparent)' }} />
         </motion.div>
 
-        {/*
-          ─── NAME ───────────────────────────────────────────────────────
-          KEY FIX: The name h1 is NOT included in the GSAP `.hero-content > *`
-          selector (we changed the children to use .hero-content-animate).
-          The h1 is always fully visible; only the typewriter controls what
-          text is shown. The `!important`-equivalent inline styles guarantee
-          no parent class (text-[#00ff88]) or GSAP opacity override wins.
-        */}
+        {/* NAME */}
         <h1
           ref={glitchRef}
-          className="font-mono font-black leading-none mb-4 relative"
+          className="font-mono font-black leading-none mb-3 relative"
           style={{
-            fontSize: 'clamp(36px,8vw,100px)',
+            fontSize: 'clamp(32px, 10vw, 100px)',
             letterSpacing: '-0.02em',
             color: '#ffffff',
             textShadow: '0 0 15px rgba(0,255,136,0.8), 0 0 30px rgba(0,255,136,0.4)',
-            // Force full visibility — GSAP must never touch these
             opacity: 1,
             visibility: 'visible',
-            willChange: 'transform', // only transform for glitch, not opacity
+            willChange: 'transform',
           }}
         >
-          {/* Show placeholder char so the h1 has height before typing starts */}
           {nameTyped || '\u00A0'}
           <span
-            className="inline-block w-[3px] ml-1 align-middle"
+            className="inline-block ml-1 align-middle"
             style={{
-              height: 'clamp(30px,6.5vw,80px)',
+              width: 'clamp(2px, 0.5vw, 3px)',
+              height: 'clamp(26px, 7.5vw, 80px)',
               background: '#00ff88',
               boxShadow: '0 0 10px rgba(0,255,136,0.8)',
               animation: 'blink 0.7s step-end infinite',
@@ -151,17 +141,23 @@ export default function HeroSection() {
           />
         </h1>
 
-        {/* Animated role subtitle */}
-        <div className="hero-content-animate h-8 overflow-hidden mb-8 flex items-center justify-center">
+        {/* Role subtitle */}
+        <div className="hero-content-animate overflow-hidden mb-6 flex items-center justify-center"
+          style={{ height: 'clamp(28px, 6vw, 36px)' }}
+        >
           <AnimatePresence mode="wait">
             <motion.div
               key={roleIdx}
-              initial={{ y: 30, opacity: 0 }}
+              initial={{ y: 24, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              exit={{ y: -30, opacity: 0 }}
-              transition={{ duration: 0.4, ease: 'easeInOut' }}
-              className="font-mono text-base md:text-xl tracking-widest"
-              style={{ color: 'rgba(0,255,136,0.75)', letterSpacing: '0.15em' }}
+              exit={{ y: -24, opacity: 0 }}
+              transition={{ duration: 0.35, ease: 'easeInOut' }}
+              className="font-mono tracking-widest"
+              style={{
+                fontSize: 'clamp(11px, 3.5vw, 20px)',
+                color: 'rgba(0,255,136,0.75)',
+                letterSpacing: '0.12em',
+              }}
             >
               {ROLES[roleIdx]}
             </motion.div>
@@ -173,16 +169,19 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1, duration: 0.6 }}
-          className="hero-content-animate flex flex-wrap justify-center gap-3 mb-12"
+          className="hero-content-animate flex flex-wrap justify-center mb-8"
+          style={{ gap: 'clamp(6px, 2vw, 12px)' }}
         >
           {['Kathmandu, Nepal', 'Available for Freelance', 'CTF Competitor', 'CEH Certified'].map((tag, i) => (
             <div
               key={i}
-              className="font-mono text-xs px-4 py-2 rounded-full tracking-widest transition-all duration-300 cursor-default"
+              className="font-mono rounded-full tracking-widest transition-all duration-300 cursor-default"
               style={{
+                fontSize: 'clamp(9px, 2.5vw, 11px)',
+                padding: 'clamp(5px, 1.5vw, 8px) clamp(10px, 3vw, 16px)',
                 background: 'rgba(0,255,136,0.05)',
                 border: '1px solid rgba(0,255,136,0.15)',
-                color: 'rgba(0,255,136,0.6)',
+                color: 'rgba(0,255,136,0.65)',
                 backdropFilter: 'blur(10px)',
               }}
               onMouseEnter={e => {
@@ -204,20 +203,25 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.6 }}
-          className="hero-content-animate grid grid-cols-2 md:grid-cols-4 gap-4 mb-12 w-full max-w-2xl"
+          className="hero-content-animate grid grid-cols-2 md:grid-cols-4 w-full mb-8"
+          style={{
+            gap: 'clamp(8px, 2vw, 16px)',
+            maxWidth: 'clamp(280px, 90vw, 640px)',
+          }}
         >
           {stats.map((s, i) => (
             <div
               key={i}
-              className="text-center px-3 py-5 rounded-xl transition-all duration-300 cursor-default"
+              className="text-center rounded-xl transition-all duration-300 cursor-default"
               style={{
+                padding: 'clamp(12px, 3vw, 20px) clamp(8px, 2vw, 12px)',
                 background: 'rgba(255,255,255,0.025)',
                 border: '1px solid rgba(0,255,136,0.1)',
                 backdropFilter: 'blur(20px)',
               }}
               onMouseEnter={e => {
                 (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(0,255,136,0.35)';
-                (e.currentTarget as HTMLDivElement).style.boxShadow = '0 0 30px rgba(0,255,136,0.1)';
+                (e.currentTarget as HTMLDivElement).style.boxShadow = '0 0 24px rgba(0,255,136,0.1)';
                 (e.currentTarget as HTMLDivElement).style.transform = 'translateY(-3px)';
               }}
               onMouseLeave={e => {
@@ -226,10 +230,23 @@ export default function HeroSection() {
                 (e.currentTarget as HTMLDivElement).style.transform = 'translateY(0)';
               }}
             >
-              <div className="font-mono font-black text-2xl mb-1" style={{ color: '#00ff88', textShadow: '0 0 20px rgba(0,255,136,0.5)' }}>
+              <div
+                className="font-mono font-black mb-1"
+                style={{
+                  fontSize: 'clamp(18px, 5vw, 26px)',
+                  color: '#00ff88',
+                  textShadow: '0 0 20px rgba(0,255,136,0.5)',
+                }}
+              >
                 {s.value}
               </div>
-              <div className="font-mono text-xs tracking-widest" style={{ color: 'rgba(0,255,136,0.4)' }}>
+              <div
+                className="font-mono tracking-widest"
+                style={{
+                  fontSize: 'clamp(8px, 2vw, 11px)',
+                  color: 'rgba(0,255,136,0.4)',
+                }}
+              >
                 {s.label}
               </div>
             </div>
@@ -241,13 +258,18 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.6 }}
-          className="hero-content-animate flex flex-wrap justify-center gap-4"
+          className="hero-content-animate flex flex-col sm:flex-row flex-wrap justify-center w-full"
+          style={{
+            gap: 'clamp(8px, 2vw, 14px)',
+            maxWidth: 'clamp(260px, 85vw, 600px)',
+          }}
         >
           <button
             onClick={() => scrollTo('projects')}
-            className="font-mono text-sm tracking-widest uppercase font-black transition-all duration-300"
+            className="font-mono tracking-widest uppercase font-black transition-all duration-300 w-full sm:w-auto"
             style={{
-              padding: '14px 36px',
+              fontSize: 'clamp(10px, 2.8vw, 13px)',
+              padding: 'clamp(12px, 3vw, 14px) clamp(20px, 5vw, 36px)',
               borderRadius: 8,
               border: 'none',
               cursor: 'pointer',
@@ -255,56 +277,78 @@ export default function HeroSection() {
               color: '#010603',
               boxShadow: '0 0 30px rgba(0,255,136,0.35), 0 4px 20px rgba(0,0,0,0.4)',
             }}
-            onMouseEnter={e => { gsap.to(e.currentTarget, { scale: 1.05, boxShadow: '0 0 50px rgba(0,255,136,0.6)', duration: 0.25 }); }}
-            onMouseLeave={e => { gsap.to(e.currentTarget, { scale: 1, boxShadow: '0 0 30px rgba(0,255,136,0.35)', duration: 0.25 }); }}
+            onMouseEnter={e => gsap.to(e.currentTarget, { scale: 1.05, boxShadow: '0 0 50px rgba(0,255,136,0.6)', duration: 0.25 })}
+            onMouseLeave={e => gsap.to(e.currentTarget, { scale: 1, boxShadow: '0 0 30px rgba(0,255,136,0.35)', duration: 0.25 })}
           >
             ◆ View Projects
           </button>
-          <button
-            onClick={() => scrollTo('contact')}
-            className="font-mono text-sm tracking-widest uppercase transition-all duration-300"
-            style={{
-              padding: '14px 36px',
-              borderRadius: 8,
-              cursor: 'pointer',
-              background: 'transparent',
-              color: 'rgba(0,255,136,0.8)',
-              border: '1px solid rgba(0,255,136,0.3)',
-              backdropFilter: 'blur(10px)',
-            }}
-            onMouseEnter={e => { gsap.to(e.currentTarget, { scale: 1.04, duration: 0.25 }); (e.currentTarget as HTMLButtonElement).style.background = 'rgba(0,255,136,0.08)'; (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(0,255,136,0.6)'; }}
-            onMouseLeave={e => { gsap.to(e.currentTarget, { scale: 1, duration: 0.25 }); (e.currentTarget as HTMLButtonElement).style.background = 'transparent'; (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(0,255,136,0.3)'; }}
-          >
-            ◈ Contact Me
-          </button>
-          <button
-            onClick={() => scrollTo('research')}
-            className="font-mono text-sm tracking-widest uppercase transition-all duration-300"
-            style={{
-              padding: '14px 36px',
-              borderRadius: 8,
-              cursor: 'pointer',
-              background: 'transparent',
-              color: 'rgba(0,170,255,0.8)',
-              border: '1px solid rgba(0,170,255,0.3)',
-              backdropFilter: 'blur(10px)',
-            }}
-            onMouseEnter={e => { gsap.to(e.currentTarget, { scale: 1.04, duration: 0.25 }); (e.currentTarget as HTMLButtonElement).style.background = 'rgba(0,170,255,0.08)'; (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(0,170,255,0.6)'; }}
-            onMouseLeave={e => { gsap.to(e.currentTarget, { scale: 1, duration: 0.25 }); (e.currentTarget as HTMLButtonElement).style.background = 'transparent'; (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(0,170,255,0.3)'; }}
-          >
-            ◉ Research
-          </button>
+
+          <div className="flex gap-2 sm:gap-3 w-full sm:w-auto">
+            <button
+              onClick={() => scrollTo('contact')}
+              className="font-mono tracking-widest uppercase transition-all duration-300 flex-1 sm:flex-none"
+              style={{
+                fontSize: 'clamp(10px, 2.8vw, 13px)',
+                padding: 'clamp(12px, 3vw, 14px) clamp(14px, 3.5vw, 28px)',
+                borderRadius: 8,
+                cursor: 'pointer',
+                background: 'transparent',
+                color: 'rgba(0,255,136,0.8)',
+                border: '1px solid rgba(0,255,136,0.3)',
+                backdropFilter: 'blur(10px)',
+              }}
+              onMouseEnter={e => {
+                gsap.to(e.currentTarget, { scale: 1.04, duration: 0.25 });
+                (e.currentTarget as HTMLButtonElement).style.background = 'rgba(0,255,136,0.08)';
+                (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(0,255,136,0.6)';
+              }}
+              onMouseLeave={e => {
+                gsap.to(e.currentTarget, { scale: 1, duration: 0.25 });
+                (e.currentTarget as HTMLButtonElement).style.background = 'transparent';
+                (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(0,255,136,0.3)';
+              }}
+            >
+              ◈ Contact
+            </button>
+
+            <button
+              onClick={() => scrollTo('research')}
+              className="font-mono tracking-widest uppercase transition-all duration-300 flex-1 sm:flex-none"
+              style={{
+                fontSize: 'clamp(10px, 2.8vw, 13px)',
+                padding: 'clamp(12px, 3vw, 14px) clamp(14px, 3.5vw, 28px)',
+                borderRadius: 8,
+                cursor: 'pointer',
+                background: 'transparent',
+                color: 'rgba(0,170,255,0.8)',
+                border: '1px solid rgba(0,170,255,0.3)',
+                backdropFilter: 'blur(10px)',
+              }}
+              onMouseEnter={e => {
+                gsap.to(e.currentTarget, { scale: 1.04, duration: 0.25 });
+                (e.currentTarget as HTMLButtonElement).style.background = 'rgba(0,170,255,0.08)';
+                (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(0,170,255,0.6)';
+              }}
+              onMouseLeave={e => {
+                gsap.to(e.currentTarget, { scale: 1, duration: 0.25 });
+                (e.currentTarget as HTMLButtonElement).style.background = 'transparent';
+                (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(0,170,255,0.3)';
+              }}
+            >
+              ◉ Research
+            </button>
+          </div>
         </motion.div>
       </div>
 
-      {/* Scroll indicator */}
+      {/* Scroll indicator — hidden on very small screens */}
       <div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+        className="absolute bottom-6 left-1/2 -translate-x-1/2 flex-col items-center gap-2 hidden sm:flex"
         style={{ animation: 'floatDown 2s ease-in-out infinite', color: 'rgba(0,255,136,0.35)' }}
       >
         <div className="font-mono text-xs tracking-[0.5em]">SCROLL</div>
         <div
-          className="w-px h-10"
+          className="w-px h-8"
           style={{ background: 'linear-gradient(180deg,rgba(0,255,136,0.4),transparent)', animation: 'growLine 2s ease-in-out infinite' }}
         />
       </div>

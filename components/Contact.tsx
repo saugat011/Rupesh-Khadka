@@ -201,6 +201,7 @@ export default function Terminal() {
           autoComplete="off"
           spellCheck={false}
           disabled={typing}
+          suppressHydrationWarning={true} 
         />
         {input && !typing && (
           <div className="font-mono text-xs shrink-0" style={{ color: 'rgba(0,255,136,0.2)' }}>

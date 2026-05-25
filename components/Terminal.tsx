@@ -204,6 +204,7 @@ export default function Terminal() {
           autoComplete="off"
           spellCheck={false}
           disabled={typing}
+
         />
         {/* Auto-complete hint */}
         {input && !typing && (
