@@ -76,7 +76,7 @@ export default function LoadingScreen({ onDone }: { onDone: () => void }) {
               letterSpacing: '0.15em',
             }}
           >
-            ⚡ SYSTEM_BREACH_DETECTED
+             SYSTEM_BREACH_DETECTED
           </div>
           <div className="font-mono text-xs tracking-[0.5em]" style={{ color: 'rgba(255,34,68,0.4)' }}>
             INITIALIZING SECURE SHELL · ESTABLISHING TUNNEL

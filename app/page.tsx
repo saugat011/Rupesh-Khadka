@@ -20,7 +20,6 @@ export default function Page() {
   const [loaded, setLoaded] = useState(false);
   const [active, setActive] = useState('hero');
 
-  // Ensure scroll is forced to top on mount
   useEffect(() => {
     if ('scrollRestoration' in window.history) {
       window.history.scrollRestoration = 'manual';
@@ -32,21 +31,17 @@ export default function Page() {
     <main className="bg-[#010603] min-h-screen text-[#00ff88] overflow-x-hidden cursor-none">
       <MatrixRain />
       <CustomCursor />
-      
+
       {!loaded && (
-        <LoadingScreen 
+        <LoadingScreen
           onDone={() => {
-            // Force scroll to top IMMEDIATELY before rendering content
             window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
             setLoaded(true);
-          }} 
+          }}
         />
       )}
 
-      {/* Opacity lock prevents the user from seeing the page jump while it renders */}
-      <div 
-        className={`transition-opacity duration-700 ${loaded ? 'opacity-100' : 'opacity-0'}`}
-      >
+      <div className={`transition-opacity duration-700 ${loaded ? 'opacity-100' : 'opacity-0'}`}>
         <Navbar active={active} />
         <section id="hero"><HeroSection /></section>
         <section id="about"><About /></section>
@@ -55,7 +50,11 @@ export default function Page() {
         <section id="projects"><Projects /></section>
         <section id="research"><Research /></section>
         <section id="gallery"><Gallery /></section>
-        <section id="contact"><Contact /></section>
+
+        {/* minHeight override — prevents the global section { min-height: 100vh } from adding space after the terminal */}
+        <section id="contact" style={{ minHeight: 'auto' }}>
+          <Contact />
+        </section>
       </div>
     </main>
   );
